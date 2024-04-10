@@ -1,14 +1,22 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 
-const Modal = forwardRef(function Modal(props, ref) {
+const Modal = forwardRef(function Modal(
+    { id = "default", close_modal, title, footer, children },
+    ref
+) {
+    const [modal, setModal] = useState(null);
+
+    useEffect(() => {
+        setModal(new bootstrap.Modal(document.getElementById(id)));
+    }, []);
+
     const show = () => {
-        const modal = new bootstrap.Modal(document.getElementById("modal"));
         modal.show();
     };
 
     const close = () => {
-        const modal = new bootstrap.Modal(document.getElementById("modal"));
         modal.hide();
+        close_modal();
     };
 
     useImperativeHandle(ref, () => {
@@ -22,7 +30,7 @@ const Modal = forwardRef(function Modal(props, ref) {
         <>
             <div
                 className="modal fade"
-                id="modal"
+                id={id}
                 data-bs-backdrop="static"
                 data-bs-keyboard="false"
                 tabIndex="-1"
@@ -36,23 +44,21 @@ const Modal = forwardRef(function Modal(props, ref) {
                                 className="modal-title fs-5"
                                 id="staticBackdropLabel"
                             >
-                                {props.title}
+                                {title}
                             </h1>
                             <button
                                 type="button"
                                 className="btn-close"
-                                data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={close}
                             ></button>
                         </div>
-                        <div className="modal-body">{props.children}</div>
+                        <div className="modal-body">{children}</div>
                         <div className="modal-footer">
-                            {props.submit_button}
+                            {footer}
                             <button
                                 type="button"
                                 className="btn btn-secondary"
-                                data-bs-dismiss="modal"
                                 onClick={close}
                             >
                                 Close

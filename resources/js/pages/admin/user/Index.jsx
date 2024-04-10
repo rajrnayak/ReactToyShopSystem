@@ -8,7 +8,7 @@ function Index({ all_users }) {
             <div className="d-flex justify-content-center pb-1">
                 <div className="header d-flex justify-content-between w-100">
                     <h2>Users</h2>
-                    <Link href="/admin/user/create">
+                    <Link href="/user/create">
                         <button type="button" className="btn btn-dark">
                             Add User
                         </button>
@@ -34,7 +34,7 @@ function Index({ all_users }) {
                                 <td className="col-2">{user.user_name}</td>
                                 <td>{user.email}</td>
                                 <td>
-                                    <Link href="/admin/user/create">
+                                    <Link href="/user/create">
                                         <button
                                             type="button"
                                             className="btn btn-success"

@@ -20,18 +20,16 @@ function Create() {
     function storeData() {
         if (user.id == null) {
             axios
-                .post("http://127.0.0.1:8000/admin/user/store-or-update", user)
+                .post("http://127.0.0.1:8000/user/store-or-update", user)
                 .then(function () {
-                    router.get("/admin/user");
+                    router.get("/user");
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-        } else {
         }
     }
 
-    console.log(user);
     return (
         <>
             <div className="container w-50 mt-5">
@@ -81,7 +79,7 @@ function Create() {
                                     Submit
                                 </button>
                                 <Link
-                                    href="/admin/user"
+                                    href="/user"
                                     className="text-decoration-none ms-1"
                                 >
                                     <label className="btn btn-danger">

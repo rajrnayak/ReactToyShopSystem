@@ -1,6 +1,11 @@
 import { Link } from "@inertiajs/react";
 
 function Create() {
+    function addSubCategory() {
+        const sub_category_div = document.getElementById("subCategory");
+        const text = `<h1>Hii</h1>`;
+        sub_category_div.innerHTML = text;
+    }
     return (
         <>
             <div className="container w-50 mt-5">
@@ -24,21 +29,26 @@ function Create() {
                                     />
                                 </div>
                             </div>
-                            <div className="row p-3 d-flex justify-content-between">
-                                <label
-                                    htmlFor="colFormLabelLg"
-                                    className="col-form-label col-form-label-lg col-5"
-                                >
-                                    Sub-Category Name
-                                </label>
-                                <button
-                                    type="button"
-                                    className="btn btn-primary col-sm-2 m-1"
-                                >
-                                    Add
-                                </button>
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="row p-3 d-flex justify-content-between">
+                                        <label
+                                            htmlFor="colFormLabelLg"
+                                            className="col-form-label col-form-label-lg col-5"
+                                        >
+                                            Sub-Category Name
+                                        </label>
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary col-sm-2 m-1"
+                                            onClick={addSubCategory}
+                                        >
+                                            Add
+                                        </button>
+                                    </div>
+                                    <div id="subCategory"></div>
+                                </div>
                             </div>
-                            <div id="subCategory"></div>
                             <div className="pt-3 ms-2">
                                 <button
                                     type="submit"
@@ -47,7 +57,7 @@ function Create() {
                                     Submit
                                 </button>
                                 <Link
-                                    href="/admin/category"
+                                    href="/category"
                                     className="text-decoration-none ms-1"
                                 >
                                     <label className="btn btn-danger">

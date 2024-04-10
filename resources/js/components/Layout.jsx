@@ -94,16 +94,13 @@ function Layout({ children }) {
                                 <div className="sb-sidenav-menu-heading">
                                     Modules
                                 </div>
-                                <Link className="nav-link" href="/admin/user">
+                                <Link className="nav-link" href="/user">
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
                                     User
                                 </Link>
-                                <Link
-                                    className="nav-link"
-                                    href="/admin/category"
-                                >
+                                <Link className="nav-link" href="/category">
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
@@ -111,7 +108,7 @@ function Layout({ children }) {
                                 </Link>
                                 <Link
                                     className="nav-link"
-                                    href="/admin/agencyOrVendor"
+                                    href="/agency-or-vendor"
                                 >
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>

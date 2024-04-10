@@ -18,14 +18,14 @@ Route::get('/registration', function () {
     return Inertia::render('Registration');
 });
 
-Route::get('/admin/user',[UserController::class,'index'])->name('user.index');
-Route::get('/admin/user/create',[UserController::class,'create'])->name('user.create');
-Route::post('/admin/user/store-or-update',[UserController::class,'storeOrUpdate'])->name('user.store_or_update');
+Route::get('/user',[UserController::class,'index'])->name('user.index');
+Route::get('/user/create',[UserController::class,'create'])->name('user.create');
+Route::post('/user/store-or-update',[UserController::class,'storeOrUpdate'])->name('user.store_or_update');
 
-Route::get('/admin/category',[CategoryController::class,'index'])->name('category.index');
-Route::get('/admin/category/create',[CategoryController::class,'create'])->name('category.create');
-Route::get('/admin/category/store-or-update',[CategoryController::class,'storeOrUpdate'])->name('category.store_or_update');
+Route::get('/category',[CategoryController::class,'index'])->name('category.index');
+Route::get('/category/create',[CategoryController::class,'create'])->name('category.create');
+Route::get('/category/store-or-update',[CategoryController::class,'storeOrUpdate'])->name('category.store_or_update');
 
-Route::get('/admin/agencyOrVendor',[AgencyOrVendorController::class,'index'])->name('agency-or-vendor.index');
-Route::get('/admin/agencyOrVendor/form',[AgencyOrVendorController::class,'form'])->name('agency-or-vendor.form');
-Route::post('/admin/agencyOrVendor/store-or-update',[AgencyOrVendorController::class,'storeOrUpdate'])->name('agency-or-vendor.store_or_update');
+Route::get('/agency-or-vendor',[AgencyOrVendorController::class,'index'])->name('agency-or-vendor.index');
+Route::post('/agency-or-vendor/store-or-update/{agency_or_vendor?}',[AgencyOrVendorController::class,'storeOrUpdate'])->name('agency_or_vendor.store_or_update');
+Route::get('/agency-or-vendor/destroy/{agency_or_vendor?}',[AgencyOrVendorController::class,'destroy'])->name('agency_or_vendor.destroy');

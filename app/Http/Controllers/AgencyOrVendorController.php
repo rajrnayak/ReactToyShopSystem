@@ -10,22 +10,30 @@ class AgencyOrVendorController extends Controller
 {
     function index()
     {
-        $agency_or_vendors = AgencyOrVendor::all();
-        return Inertia::render('admin/agencyOrVendor/Index',['agency_or_vendors' => $agency_or_vendors]);
+        $agencies_or_vendors = AgencyOrVendor::all();
+        return Inertia::render('admin/agencyOrVendor/Index',['agencies_or_vendors' => $agencies_or_vendors]);
     }
 
-    function form()
+    function storeOrUpdate(Request $request ,AgencyOrVendor $agency_or_vendor)
     {
-        return Inertia::render('admin/agencyOrVendor/Form');
-    }
+        $request->validate([
+            'type' => ['required'],
+            'name' => ['required', 'max:50'],
+            'mobile_number' => ['required', 'max:10'],
+            'email' => ['required', 'max:50', 'email'],
+        ]);
 
-    function storeOrUpdate(AgencyOrVendor $agency_or_vendor,Request $request)
-    {
         $agency_or_vendor->fill([
             'type' => $request->type,
             'name' => $request->name,
             'mobile_number' => $request->mobile_number,
             'email' => $request->email,
         ])->save();
+
+    }
+
+    function destroy(AgencyOrVendor $agency_or_vendor)
+    {
+        $agency_or_vendor->delete();
     }
 }

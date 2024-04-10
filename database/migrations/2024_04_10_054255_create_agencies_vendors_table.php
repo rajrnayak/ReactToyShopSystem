@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agency_or_vendors', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('type');
+        Schema::create('agencies_vendors', function (Blueprint $table) {
+            $table->id();
+            $table->tinyInteger('type')->comment('1:agency | 2:vendor | 3:individual');
             $table->string('name');
-            $table->string('mobile_number');
-            $table->string('email');
+            $table->string('mobile_number')->unique();
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agency_or_vendors');
+        Schema::dropIfExists('agencies_vendors');
     }
 };
