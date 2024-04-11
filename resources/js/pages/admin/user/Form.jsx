@@ -12,11 +12,11 @@ const Form = forwardRef(function Form({ title }, ref) {
         setError,
         clearErrors,
         reset,
-    } = useForm({ id: null, type: "", name: "", mobile_number: "", email: "" });
+    } = useForm({ id: null, user_name: "", email: "" });
 
     function openModal(value) {
         if (value) {
-            setName(value.name);
+            setName(value.user_name);
             setFields(value);
         }
         modal_ref.current.show();
@@ -37,15 +37,13 @@ const Form = forwardRef(function Form({ title }, ref) {
     function submit(e) {
         e.preventDefault();
         clearErrors();
-
         let url = fields.id
-            ? `http://127.0.0.1:8000/agency-or-vendor/store-or-update/${fields.id}`
-            : "http://127.0.0.1:8000/agency-or-vendor/store-or-update";
-
+            ? `http://127.0.0.1:8000/user/store-or-update/${fields.id}`
+            : "http://127.0.0.1:8000/user/store-or-update";
         axios
             .post(url, fields)
             .then(function () {
-                router.visit("/agency-or-vendor");
+                router.visit("/user");
                 modal_ref.current.close();
             })
             .catch(function (error) {
@@ -73,56 +71,20 @@ const Form = forwardRef(function Form({ title }, ref) {
             >
                 <div className="row gy-2">
                     <div className="col-12">
-                        <label className="form-label">Type</label>
-                        <select
-                            className={`form-select ${
-                                errors.type ? "is-invalid" : ""
-                            }`}
-                            name="type"
-                            value={fields.type}
-                            onChange={(e) => {
-                                setFields("type", e.target.value);
-                            }}
-                        >
-                            <option value="" disabled>
-                                Open this select menu
-                            </option>
-                            <option value="1">Agency</option>
-                            <option value="2">Vendor</option>
-                            <option value="3">Individual</option>
-                        </select>
-                        <div className="invalid-feedback">{errors.type}</div>
-                    </div>
-                    <div className="col-12">
-                        <label className="form-label ">Name</label>
+                        <label className="form-label ">User Name</label>
                         <input
                             type="text"
-                            name="name"
-                            value={fields.name}
+                            name="user_name"
+                            value={fields.user_name}
                             onChange={(e) => {
-                                setFields("name", e.target.value);
+                                setFields("user_name", e.target.value);
                             }}
                             className={`form-control ${
-                                errors.name ? "is-invalid" : ""
-                            }`}
-                        />
-                        <div className="invalid-feedback">{errors.name}</div>
-                    </div>
-                    <div className="col-12">
-                        <label className="form-label ">Mobile Number</label>
-                        <input
-                            type="text"
-                            name="mobile_number"
-                            value={fields.mobile_number}
-                            onChange={(e) => {
-                                setFields("mobile_number", e.target.value);
-                            }}
-                            className={`form-control ${
-                                errors.mobile_number ? "is-invalid" : ""
+                                errors.user_name ? "is-invalid" : ""
                             }`}
                         />
                         <div className="invalid-feedback">
-                            {errors.mobile_number}
+                            {errors.user_name}
                         </div>
                     </div>
                     <div className="col-12">

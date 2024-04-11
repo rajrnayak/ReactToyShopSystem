@@ -1,16 +1,28 @@
-import { Link } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
+import { useRef, useState } from "react";
+import Swal from "sweetalert2";
+import Form from "./Form";
 
 function Index() {
+    const [category, setCategory] = useState(null);
+    let form_ref = useRef(null);
+
+    function formHandler(value = null) {
+        form_ref.current.openModal();
+    }
+
     return (
         <>
             <div className="d-flex justify-content-center pb-1">
                 <div className="header d-flex justify-content-between w-100">
-                    <h2>Categorys</h2>
-                    <Link href="/category/create">
-                        <button type="button" className="btn btn-dark">
-                            Add Category
-                        </button>
-                    </Link>
+                    <h2>Categories & Sub-Categories</h2>
+                    <button
+                        type="button"
+                        className="btn btn-dark"
+                        onClick={() => formHandler()}
+                    >
+                        Add Category
+                    </button>
                 </div>
             </div>
             <div className="d-flex justify-content-center">
@@ -29,27 +41,24 @@ function Index() {
                             <td>Toy</td>
                             <td>Truck</td>
                             <td>
-                                <a href="">
-                                    <button
-                                        type="button"
-                                        className="btn btn-success"
-                                    >
-                                        Edit
-                                    </button>
-                                </a>
-                                <a href="">
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger ms-1"
-                                    >
-                                        Delete
-                                    </button>
-                                </a>
+                                <button
+                                    type="button"
+                                    className="btn btn-success"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-danger ms-1"
+                                >
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <Form title={"Category & Sub-Category"} ref={form_ref}></Form>
         </>
     );
 }

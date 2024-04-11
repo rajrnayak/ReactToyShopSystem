@@ -1,4 +1,29 @@
+import { Link, useForm, router } from "@inertiajs/react";
+import GuestLayout from "../components/GuestLayout";
+
 function Login() {
+    const {
+        data: fields,
+        setData: setFields,
+        errors,
+        setError,
+        clearErrors,
+        reset,
+    } = useForm({ email: "", password: "" });
+
+    function submit(e) {
+        e.preventDefault();
+        clearErrors();
+        axios
+            .post("http://127.0.0.1:8000/login-post", fields)
+            .then(function () {
+                router.visit("/dashboard");
+            })
+            .catch(function (error) {
+                setError(error.response.data.errors);
+            });
+    }
+
     return (
         <>
             <div id="layoutAuthentication_content">
@@ -13,64 +38,72 @@ function Login() {
                                         </h3>
                                     </div>
                                     <div className="card-body">
-                                        <form>
+                                        <form onSubmit={submit}>
                                             <div className="form-floating mb-3">
                                                 <input
-                                                    className="form-control"
                                                     id="inputEmail"
                                                     type="email"
                                                     name="email"
+                                                    value={fields.email}
+                                                    onChange={(e) => {
+                                                        setFields(
+                                                            "email",
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                    className={`form-control ${
+                                                        errors.email
+                                                            ? "is-invalid"
+                                                            : ""
+                                                    }`}
                                                     placeholder="name@example.com"
                                                 />
                                                 <label htmlFor="inputEmail">
                                                     Email address
                                                 </label>
+                                                <div className="invalid-feedback">
+                                                    {errors.email}
+                                                </div>
                                             </div>
                                             <div className="form-floating mb-3">
                                                 <input
-                                                    className="form-control"
                                                     id="inputPassword"
                                                     type="password"
                                                     name="password"
+                                                    value={fields.password}
+                                                    onChange={(e) => {
+                                                        setFields(
+                                                            "password",
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                    className={`form-control ${
+                                                        errors.password
+                                                            ? "is-invalid"
+                                                            : ""
+                                                    }`}
                                                     placeholder="Password"
                                                 />
                                                 <label htmlFor="inputPassword">
                                                     Password
                                                 </label>
-                                            </div>
-                                            <div className="form-check mb-3">
-                                                <input
-                                                    className="form-check-input"
-                                                    id="inputRememberPassword"
-                                                    type="checkbox"
-                                                    value=""
-                                                />
-                                                <label
-                                                    className="form-check-label"
-                                                    htmlFor="inputRememberPassword"
-                                                >
-                                                    Remember Password
-                                                </label>
+                                                <div className="invalid-feedback">
+                                                    {errors.password}
+                                                </div>
                                             </div>
                                             <div className="d-flex align-items-center mt-4 mb-0">
-                                                {/* <a
-                                                    className="small"
-                                                    href="password.html"
-                                                >
-                                                    Forgot Password?
-                                                </a> */}
-                                                <a
+                                                <button
+                                                    type="submit"
                                                     className="btn btn-primary"
-                                                    href="index.html"
                                                 >
                                                     Login
-                                                </a>
-                                                <a
+                                                </button>
+                                                {/* <a
                                                     className="btn btn-danger ms-1"
                                                     href="index.html"
                                                 >
                                                     Cancel
-                                                </a>
+                                                </a> */}
                                             </div>
                                         </form>
                                     </div>
@@ -83,5 +116,7 @@ function Login() {
         </>
     );
 }
+
+Login.layout = (page) => <GuestLayout children={page} />;
 
 export default Login;

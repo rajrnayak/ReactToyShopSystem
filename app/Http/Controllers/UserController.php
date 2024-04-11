@@ -15,17 +15,22 @@ class UserController extends Controller
         return Inertia::render('admin/user/Index',['all_users' => $users]);
     }
 
-    function create()
-    {
-        return Inertia::render('admin/user/Create');
-    }
-
     function storeOrUpdate(User $user,Request $request)
     {
+        $request->validate([
+            'user_name' => ['required', 'max:50'],
+            'email' => ['required', 'max:50', 'email'],
+        ]);
+
         $user->fill([
             'user_name' => $request->user_name,
             'email' => $request->email,
             'password' => Hash::make('123456'),
         ])->save();
     }
+
+    function destroy(User $user){
+        $user->delete();
+    }
+
 }

@@ -19,7 +19,13 @@ class CategoryController extends Controller
 
     function storeOrUpdate(Request $request)
     {
-        dd($request);
+
+        $request->validate([
+            'name' => ['required', 'max:50'],
+            'sub_category.*' => ['required']
+        ]);
+
+
     }
 
 }
