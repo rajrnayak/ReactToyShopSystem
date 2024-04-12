@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 
 const Modal = forwardRef(function Modal(
-    { id = "default", close_modal, title, footer, children },
+    { id = "default", closeModal, title, footer, children },
     ref
 ) {
     const [modal, setModal] = useState(null);
@@ -16,7 +16,7 @@ const Modal = forwardRef(function Modal(
 
     const close = () => {
         modal.hide();
-        close_modal();
+        closeModal();
     };
 
     useImperativeHandle(ref, () => {

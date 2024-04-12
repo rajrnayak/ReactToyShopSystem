@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { useForm, router } from "@inertiajs/react";
 import Modal from "../../../components/Modal.jsx";
+import Swal from "sweetalert2";
 
 const Form = forwardRef(function Form({ title }, ref) {
     let modal_ref = useRef(null);
@@ -12,13 +13,23 @@ const Form = forwardRef(function Form({ title }, ref) {
         setError,
         clearErrors,
         reset,
-    } = useForm({ id: null, name: "", sub_categories: [] });
+    } = useForm({
+        id: null,
+        name: "",
+        sub_categories: [],
+    });
 
     function openModal(value) {
         if (value) {
             setName(value.name);
+
+            value.sub_categories.forEach((subCategory) => {
+                delete subCategory.category_id;
+            });
+
             setFields(value);
         }
+
         modal_ref.current.show();
     }
 
@@ -38,7 +49,7 @@ const Form = forwardRef(function Form({ title }, ref) {
         let data = { ...fields };
 
         data.sub_categories.push({
-            id: "",
+            id: null,
             name: "",
         });
 
@@ -55,8 +66,23 @@ const Form = forwardRef(function Form({ title }, ref) {
     }
 
     function deleteSubCategoryField(index) {
-        let div = document.getElementById(index);
-        div.remove();
+        let subCategories = [...fields.sub_categories];
+
+        if (subCategories.length == 1) {
+            Swal.fire({
+                title: "Deleted!",
+                text: "You can't delete this field minimum 1 Sub-Category required.",
+                icon: "error",
+                width: "400px",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        } else {
+            let changed_subCategories = subCategories.filter(
+                (a, i) => i !== index
+            );
+            setFields({ ...fields, sub_categories: changed_subCategories });
+        }
     }
 
     function submit(e) {
@@ -93,11 +119,11 @@ const Form = forwardRef(function Form({ title }, ref) {
                         Submit
                     </button>
                 }
-                close_modal={closeModal}
+                closeModal={closeModal}
             >
                 <div className="row gy-3">
                     <div className="col-12">
-                        <label className="form-label ">User Name</label>
+                        <label className="form-label ">Name</label>
                         <input
                             type="text"
                             name="name"
@@ -113,7 +139,7 @@ const Form = forwardRef(function Form({ title }, ref) {
                     </div>
                     <div className="col-12 d-flex justify-content-between">
                         <label className="col-form-label col-5">
-                            Sub Category Name
+                            Sub Categories
                         </label>
                         <button
                             type="button"
@@ -122,6 +148,9 @@ const Form = forwardRef(function Form({ title }, ref) {
                         >
                             Add
                         </button>
+                    </div>
+                    <div className="text-danger col-12">
+                        {errors.sub_categories}
                     </div>
                     {fields.sub_categories.map((sub_category, index) => (
                         <div
@@ -138,11 +167,13 @@ const Form = forwardRef(function Form({ title }, ref) {
                                         changeSubCategoryName(e, index)
                                     }
                                     className={`form-control ${
-                                        errors.name ? "is-invalid" : ""
+                                        errors[`sub_categories.${index}.name`]
+                                            ? "is-invalid"
+                                            : ""
                                     }`}
                                 />
                                 <div className="invalid-feedback">
-                                    {errors.name}
+                                    {errors[`sub_categories.${index}.name`]}
                                 </div>
                             </div>
                             <button
@@ -161,22 +192,3 @@ const Form = forwardRef(function Form({ title }, ref) {
 });
 
 export default Form;
-
-// let data = { ...fields };
-
-//         let newObj = setFields({
-//             ...fields,
-//             sub_categories: [...fields.sub_categories, { [key]: value }],
-//         });
-
-//         setFields(
-//             data,
-//             data.sub_categories.map((sub_category, index) => {
-//                 if (key == index) {
-//                     let object = (sub_category.name = value);
-//                     return { ...sub_category, object };
-//                 } else {
-//                     return sub_category;
-//                 }
-//             })
-//         );

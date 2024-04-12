@@ -9,6 +9,15 @@ use Inertia\Inertia;
 
 class AuthController extends Controller
 {
+
+    function check(){
+        if(Auth::check()){
+            return to_route('dashboard');
+        }else{
+            return Inertia::render('Login');
+        }
+    }
+
     function login()
     {
         return Inertia::render('Login');

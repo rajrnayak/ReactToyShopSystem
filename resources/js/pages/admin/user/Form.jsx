@@ -67,7 +67,7 @@ const Form = forwardRef(function Form({ title }, ref) {
                         Submit
                     </button>
                 }
-                close_modal={closeModal}
+                closeModal={closeModal}
             >
                 <div className="row gy-2">
                     <div className="col-12">

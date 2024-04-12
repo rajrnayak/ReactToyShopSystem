@@ -96,7 +96,7 @@ function Layout({ children }) {
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
-                                    Category & Sub-Category
+                                    Category
                                 </Link>
                                 <Link
                                     className="nav-link"
@@ -106,6 +106,12 @@ function Layout({ children }) {
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
                                     Agency or vendor
+                                </Link>
+                                <Link className="nav-link" href="/expense">
+                                    <div className="sb-nav-link-icon">
+                                        <i className="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    Expense
                                 </Link>
 
                                 {/* <div className="sb-sidenav-menu-heading">Interface</div>
