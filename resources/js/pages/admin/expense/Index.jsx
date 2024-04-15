@@ -85,7 +85,9 @@ function Index({ expenses }) {
                                 <th scope="col">{index + 1}</th>
                                 <td scope="col">{value.date}</td>
                                 <td scope="col">{value.time}</td>
-                                <td scope="col">{value.sub_categories.name}</td>
+                                <td scope="col">
+                                    {value.sub_categories.categories.name}
+                                </td>
                                 <td scope="col">{value.sub_categories.name}</td>
                                 <td scope="col">{value.vendors.name}</td>
                                 <td scope="col">{value.amount}</td>
@@ -93,14 +95,14 @@ function Index({ expenses }) {
                                     <button
                                         type="button"
                                         className="btn btn-success"
-                                        onClick={() => formHandler()}
+                                        onClick={() => formHandler(value)}
                                     >
                                         Edit
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-danger ms-1"
-                                        onClick={() => destroy()}
+                                        onClick={() => destroy(value.id)}
                                     >
                                         Delete
                                     </button>

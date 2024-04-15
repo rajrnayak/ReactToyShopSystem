@@ -29,9 +29,13 @@ class CategoryController extends Controller
             'name' => $request->input('name'),
         ])->save();
 
-        $ids = data_get($request->sub_categories,'*.id');
+        $ids = [];
 
-        SubCategory::whereNotIn('id',$ids)->delete();
+        foreach ($request->sub_categories as $value) {
+            isset($value['id']) && $ids[] = $value['id'];
+        }
+
+        SubCategory::where('category_id',$request->id)->whereNotIn('id',$ids)->delete();
 
         foreach ($request->sub_categories as $value) {
             SubCategory::updateOrCreate(

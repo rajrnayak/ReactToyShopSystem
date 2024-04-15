@@ -113,6 +113,12 @@ function Layout({ children }) {
                                     </div>
                                     Expense
                                 </Link>
+                                <Link className="nav-link" href="/transaction">
+                                    <div className="sb-nav-link-icon">
+                                        <i className="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    Transaction
+                                </Link>
 
                                 {/* <div className="sb-sidenav-menu-heading">Interface</div>
                         <a className="nav-link collapsed" href="#" data-bs-toggle="collapse"

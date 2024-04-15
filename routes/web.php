@@ -4,6 +4,7 @@ use App\Http\Controllers\AgencyOrVendorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -41,5 +42,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/expense/get-categories',[ExpenseController::class,'getCategories'])->name('expense.get_categories');
     Route::get('/expense/get-sub-categories/{category}',[ExpenseController::class,'getSubCategories'])->name('expense.get_sub_categories');
     Route::get('/expense/get-vendors',[ExpenseController::class,'getVendors'])->name('expense.get_vendors');
+
+    Route::get('/transaction',[TransactionController::class,'index'])->name('transaction.index');
 
 });

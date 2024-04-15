@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('mobile_number')->unique();
             $table->string('email')->unique();
-            $table->bigInteger('balance')->default(0);
+            $table->integer('balance')->default(0);
             $table->timestamps();
         });
     }
