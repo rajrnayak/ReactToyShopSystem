@@ -113,6 +113,12 @@ function Layout({ children }) {
                                     </div>
                                     Expense
                                 </Link>
+                                <Link className="nav-link" href="/payment">
+                                    <div className="sb-nav-link-icon">
+                                        <i className="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    Payment
+                                </Link>
                                 <Link className="nav-link" href="/transaction">
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>

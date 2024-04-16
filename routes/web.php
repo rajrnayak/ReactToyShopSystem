@@ -4,6 +4,7 @@ use App\Http\Controllers\AgencyOrVendorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -44,5 +45,10 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/expense/get-vendors',[ExpenseController::class,'getVendors'])->name('expense.get_vendors');
 
     Route::get('/transaction',[TransactionController::class,'index'])->name('transaction.index');
+
+    Route::get('/payment',[PaymentController::class,'index'])->name('payment.index');
+    Route::post('/payment/store-or-update/{payment?}',[PaymentController::class,'storeOrUpdate'])->name('payment.store_or_update');
+    Route::get('/payment/destroy/{payment}',[PaymentController::class,'destroy'])->name('payment.destroy');
+    Route::get('/payment/get-vendors',[PaymentController::class,'getVendors'])->name('payment.get_vendors');
 
 });
