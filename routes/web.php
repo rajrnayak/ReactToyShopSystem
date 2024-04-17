@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/user',[UserController::class,'index'])->name('user.index');
     Route::post('/user/store-or-update/{user?}',[UserController::class,'storeOrUpdate'])->name('user.store_or_update');
     Route::get('/user/destroy/{user}',[UserController::class,'destroy'])->name('user.destroy');
+    Route::get('/user/get-users/{user}',[UserController::class,'getUsers'])->name('user.get_users');
 
     Route::get('/category',[CategoryController::class,'index'])->name('category.index');
     Route::post('/category/store-or-update/{category?}',[CategoryController::class,'storeOrUpdate'])->name('category.store_or_update');

@@ -76,7 +76,6 @@ function Index({ transactions }) {
                             <th scope="col">Credit</th>
                             <th scope="col">Debit</th>
                             <th scope="col">Balance</th>
-                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
@@ -89,15 +88,6 @@ function Index({ transactions }) {
                                 <td scope="col">{value.credit}</td>
                                 <td scope="col">{value.debit}</td>
                                 <td scope="col">{value.balance}</td>
-                                <td scope="col">
-                                    <button
-                                        type="button"
-                                        className="btn btn-info"
-                                        // onClick={() => formHandler(value)}
-                                    >
-                                        View
-                                    </button>
-                                </td>
                             </tr>
                         ))}
                     </tbody>

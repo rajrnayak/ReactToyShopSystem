@@ -6,6 +6,7 @@ use App\Http\Requests\PaymentRequest;
 use App\Models\AgencyOrVendor;
 use App\Models\Payment;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +34,10 @@ class PaymentController extends Controller
 
         return Inertia::render('admin/payment/Index',['payments' => $query->get()]);
     }
-    // ExpenseRequest $request,Expense $expense
+
     function storeOrUpdate(PaymentRequest $request,Payment $payment)
     {
+
         try {
             DB::beginTransaction();
 
@@ -57,55 +59,101 @@ class PaymentController extends Controller
 
             if($payment->id == null){
 
-                if($request->type == 1){
+                if($request->type == '1'){
 
                     $data['credit'] = $new_amount;
                     $data['balance'] = $vendor->balance + $data['credit'];
 
-                }elseif ($request->type == 2) {
+                }
+                elseif ($request->type == '2') {
 
                     $data['debit'] = $new_amount;
                     $data['balance'] = $vendor->balance - $data['debit'];
 
                 }
+            }
+            else
+            {
 
-            }else{
+                if ($data['vendor_id'] != $payment->vendor_id) {
 
-                dump($request->toArray());
-                dd($payment->toArray());
+                    $this->olderVendorTransaction($data , $payment->vendor_id ,$payment->type, $old_amount);
 
-                // if($request->type == $payment->type){
+                    if($request->type == 1){
 
-                //     if($request->type == 1){
+                        $data['credit'] = $new_amount;
+                        $data['balance'] = $vendor->balance + $data['credit'];
 
-                //         $data['credit'] = $new_amount;
-                //         $data['balance'] = $vendor->balance + $data['credit'];
+                    }
+                    elseif ($request->type == 2) {
 
-                //     }elseif ($request->type == 2) {
+                        $data['debit'] = $new_amount;
+                        $data['balance'] = $vendor->balance - $data['debit'];
 
-                //         $data['debit'] = $new_amount;
-                //         $data['balance'] = $vendor->balance - $data['debit'];
+                    }
 
-                //     }
+                }
+                else{
 
-                // }else{
-                //     if ($new_amount > $old_amount) {
+                    if($request->type == $payment->type){
 
-                //         $data['debit'] = $new_amount - $old_amount;
-                //         $data['balance'] = $vendor->balance - $data['debit'];
+                        if($request->type == 1){
 
-                //     }elseif($new_amount < $old_amount){
+                            if ($new_amount > $old_amount) {
 
-                //         $data['credit'] = $old_amount - $new_amount;
-                //         $data['balance'] = $vendor->balance + $data['credit'];
+                                $data['credit'] = $new_amount - $old_amount;
+                                $data['balance'] = $vendor->balance + $data['credit'];
 
-                //     }elseif($new_amount == $old_amount){
+                            }elseif($new_amount < $old_amount){
 
-                //         $data['balance'] = $vendor->balance;
+                                $data['debit'] = $old_amount - $new_amount;
+                                $data['balance'] = $vendor->balance - $data['debit'];
 
-                //     }
-                // }
+                            }elseif($new_amount == $old_amount){
 
+                                $data['balance'] = $vendor->balance;
+
+                            }
+
+                        }elseif ($request->type == 2) {
+
+                            if ($new_amount > $old_amount) {
+
+                                $data['debit'] = $new_amount - $old_amount;
+                                $data['balance'] = $vendor->balance - $data['debit'];
+
+                            }elseif($new_amount < $old_amount){
+
+                                $data['credit'] = $old_amount - $new_amount;
+                                $data['balance'] = $vendor->balance + $data['credit'];
+
+                            }elseif($new_amount == $old_amount){
+
+                                $data['balance'] = $vendor->balance;
+
+                            }
+
+                        }
+
+                    }else{
+
+                        $this->oldTypeTransaction($data,$request->type,$old_amount,$vendor->balance);
+
+                        $updated_vendor = AgencyOrVendor::where('id', $data['vendor_id'])->first();
+
+                        if($request->type == 1){
+
+                            $data['credit'] = $new_amount;
+                            $data['balance'] = $updated_vendor->balance + $data['credit'];
+
+                        }elseif ($request->type == 2) {
+
+                            $data['debit'] = $new_amount;
+                            $data['balance'] = $updated_vendor->balance - $data['debit'];
+
+                        }
+                    }
+                }
             }
 
             $this->transaction($data);
@@ -129,6 +177,46 @@ class PaymentController extends Controller
         }
     }
 
+    function olderVendorTransaction($data , $vendor_id , $type , $old_amount){
+
+        $old_vendor = AgencyOrVendor::where('id',$vendor_id)->first();
+
+        if($type != 1){
+
+            $data['credit'] = $old_amount;
+            $data['balance'] = $old_vendor->balance + $data['credit'];
+
+        }elseif ($type != 2) {
+
+            $data['debit'] = $old_amount;
+            $data['balance'] = $old_vendor->balance - $data['debit'];
+
+        }
+
+        $data['vendor_id'] = $vendor_id;
+
+        $this->transaction($data);
+
+    }
+
+    function oldTypeTransaction($data,$type,$old_amount,$balance){
+
+        if($type == 1){
+
+            $data['credit'] = $old_amount;
+            $data['balance'] = $balance + $data['credit'];
+
+        }elseif ($type == 2) {
+
+            $data['debit'] = $old_amount;
+            $data['balance'] = $balance - $data['debit'];
+
+        }
+
+        $this->transaction($data);
+
+    }
+
     function transaction($data){
         $transaction = new Transaction;
         $transaction->fill([
@@ -146,6 +234,32 @@ class PaymentController extends Controller
 
     function destroy(Payment $payment)
     {
+
+        $data = [
+            'date' => Carbon::now(),
+            'vendor_id' => $payment->vendor_id,
+            'user_id' => Auth::user()->id,
+            'credit' => 0,
+            'debit' => 0,
+            'balance' => 0,
+           ];
+
+        $old_vendor = AgencyOrVendor::where('id',$data['vendor_id'])->first();
+
+        if($payment->type != 1){
+
+            $data['credit'] = $payment->amount;
+            $data['balance'] = $old_vendor->balance + $data['credit'];
+
+        }elseif ($payment->type != 2) {
+
+            $data['debit'] = $payment->amount;
+            $data['balance'] = $old_vendor->balance - $data['debit'];
+
+        }
+
+        $this->transaction($data);
+
         $payment->delete();
     }
 

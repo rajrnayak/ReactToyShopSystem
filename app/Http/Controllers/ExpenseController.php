@@ -72,7 +72,7 @@ class ExpenseController extends Controller
 
                 if ($data['vendor_id'] != $expense->vendor_id) {
 
-                    $this->olderVendorTransaction($data , $expense->vendor_id , $new_amount);
+                    $this->olderVendorTransaction($data , $expense->vendor_id , $old_amount);
 
                     $data['debit'] = $new_amount;
                     $data['balance'] = $vendor->balance - $data['debit'];
@@ -117,11 +117,11 @@ class ExpenseController extends Controller
         }
     }
 
-    function olderVendorTransaction($data , $vendor_id , $new_amount){
+    function olderVendorTransaction($data , $vendor_id , $old_amount){
 
         $old_vendor = AgencyOrVendor::where('id',$vendor_id)->first();
 
-        $data['credit'] = $new_amount;
+        $data['credit'] = $old_amount;
         $data['balance'] = $old_vendor->balance + $data['credit'];
         $data['vendor_id'] = $vendor_id;
 

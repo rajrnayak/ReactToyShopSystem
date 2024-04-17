@@ -11,8 +11,14 @@ class UserController extends Controller
 {
     function index()
     {
-        $users = User::all();
-        return Inertia::render('admin/user/Index',['all_users' => $users]);
+        return Inertia::render('admin/user/Index');
+    }
+
+    function getUsers($number){
+
+        $users = User::query()->paginate(perPage: 5,page: 1);
+        return $users;
+
     }
 
     function storeOrUpdate(User $user,Request $request)
