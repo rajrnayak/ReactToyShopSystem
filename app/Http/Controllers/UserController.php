@@ -14,9 +14,9 @@ class UserController extends Controller
         return Inertia::render('admin/user/Index');
     }
 
-    function getUsers($number){
+    function loadUsersData($per_page_number,$page_number){
 
-        $users = User::query()->paginate(perPage: 5,page: 1);
+        $users = User::query()->select('id','user_name','email')->paginate(perPage: $per_page_number,page: $page_number);
         return $users;
 
     }
