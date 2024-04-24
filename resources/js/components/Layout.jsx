@@ -1,6 +1,8 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 function Layout({ children }) {
+    const { url } = usePage();
+
     return (
         <>
             <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -77,7 +79,14 @@ function Layout({ children }) {
                                 <div className="sb-sidenav-menu-heading">
                                     Core
                                 </div>
-                                <Link className="nav-link" href="/dashboard">
+                                <Link
+                                    className={
+                                        url.startsWith("/dashboard")
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
+                                    href="/dashboard"
+                                >
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
@@ -86,20 +95,38 @@ function Layout({ children }) {
                                 <div className="sb-sidenav-menu-heading">
                                     Modules
                                 </div>
-                                <Link className="nav-link" href="/user">
+                                <Link
+                                    className={
+                                        url.startsWith("/user")
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
+                                    href="/user"
+                                >
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
                                     User
                                 </Link>
-                                <Link className="nav-link" href="/category">
+                                <Link
+                                    className={
+                                        url.startsWith("/category")
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
+                                    href="/category"
+                                >
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
                                     Category
                                 </Link>
                                 <Link
-                                    className="nav-link"
+                                    className={
+                                        url.startsWith("/agency-or-vendor")
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
                                     href="/agency-or-vendor"
                                 >
                                     <div className="sb-nav-link-icon">
@@ -107,19 +134,40 @@ function Layout({ children }) {
                                     </div>
                                     Agency or vendor
                                 </Link>
-                                <Link className="nav-link" href="/expense">
+                                <Link
+                                    className={
+                                        url.startsWith("/expense")
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
+                                    href="/expense"
+                                >
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
                                     Expense
                                 </Link>
-                                <Link className="nav-link" href="/payment">
+                                <Link
+                                    className={
+                                        url.startsWith("/payment")
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
+                                    href="/payment"
+                                >
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>
                                     Payment
                                 </Link>
-                                <Link className="nav-link" href="/transaction">
+                                <Link
+                                    className={
+                                        url.startsWith("/transaction")
+                                            ? "nav-link active"
+                                            : "nav-link"
+                                    }
+                                    href="/transaction"
+                                >
                                     <div className="sb-nav-link-icon">
                                         <i className="fas fa-tachometer-alt"></i>
                                     </div>

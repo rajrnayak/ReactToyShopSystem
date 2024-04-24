@@ -6,10 +6,48 @@ import DataTable from "../../../components/DataTable";
 
 function Index() {
     const [users, setUsers] = useState([]);
-    const [columns, setColumns] = useState([]);
+    const [columns, setColumns] = useState([
+        {
+            key: "sr_no",
+            name: "Sr. No.",
+            renderBody: ({ column, row, index }) => {
+                return <>{index + 1}</>;
+            },
+        },
+        { key: "user_name", name: "Username" },
+        { key: "email", name: "Email" },
+        {
+            key: "action",
+            name: "Action",
+            renderBody: ({ column, row }) => {
+                return (
+                    <>
+                        <button
+                            type="button"
+                            className="btn btn-outline-success"
+                            onClick={() => {
+                                formHandler(row);
+                            }}
+                        >
+                            <i className="fas fa-edit"></i>
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-outline-danger ms-1"
+                            onClick={() => {
+                                destroy(row.id);
+                            }}
+                        >
+                            <i className="fas fa-trash"></i>
+                        </button>
+                    </>
+                );
+            },
+        },
+    ]);
     const [pagination, setPagination] = useState({
         current_page: 1,
-        per_page: 5,
+        per_page: 2,
         total_page: 0,
     });
 
@@ -31,70 +69,14 @@ function Index() {
                     total_page: response.data.last_page,
                     current_page: page,
                 });
-                addColumns(response.data.data[0]);
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
 
-    function actionButtons(row) {
-        return (
-            <>
-                <td>
-                    <button
-                        type="button"
-                        className="btn btn-outline-success"
-                        onClick={() => {
-                            formHandler(row);
-                        }}
-                    >
-                        <i className="fas fa-edit"></i>
-                    </button>
-                    <button
-                        type="button"
-                        className="btn btn-outline-danger ms-1"
-                        onClick={() => {
-                            destroy(row.id);
-                        }}
-                    >
-                        <i className="fas fa-trash"></i>
-                    </button>
-                </td>
-            </>
-        );
-    }
-
     function formHandler(value = null) {
         form_ref.current.openModal(value);
-    }
-
-    function addColumns(row) {
-        let temp = [];
-        temp.push({
-            key: "sr_no",
-            name: "Sr.No",
-        });
-        Object.keys(row).map((key) => {
-            if (key != "id") {
-                const column = convertToTitleCase(key);
-                temp.push({
-                    key: key,
-                    name: column,
-                });
-            }
-        });
-        setColumns(temp);
-    }
-
-    function convertToTitleCase(str) {
-        let titleCase = "";
-        str.split("_").forEach((word) => {
-            const capitalizedWord =
-                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-            titleCase += capitalizedWord + " ";
-        });
-        return titleCase;
     }
 
     function destroy(id) {
@@ -157,11 +139,10 @@ function Index() {
             <DataTable
                 columns={columns}
                 rows={users}
-                loadUsersData={loadUsersData}
+                loadData={loadUsersData}
                 pagination={pagination}
                 setPagination={setPagination}
                 per_page_numbers={[2, 5, 10, 25]}
-                actionButtons={actionButtons}
             />
             <Form title={"User"} ref={form_ref}></Form>
         </>

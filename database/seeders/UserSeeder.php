@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
 
         $faker = Factory::create();
 
-        for ($count = 0; $count < 18; $count++) {
+        for ($count = 0; $count < 38; $count++) {
 
             $array = [
                 'user_name' => $faker->name(),
